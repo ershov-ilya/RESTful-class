@@ -19,8 +19,13 @@ require_once('../restful.class.php');
 define('ACTION', 'test');
 //$rest = new RESTful(ACTION);
 //$rest = new RESTful(ACTION, array()); // Пустой массив вторым параметром отключает фильтрацию
-$rest = new RESTful(ACTION, array('aaa', 'hash'));
+$rest = new RESTful(ACTION, array('aaa', 'Hash'));
 
+print "Scope:\n";
 print_r($rest->get('scope'));
 
-var_dump($rest->get('filter'));
+//print "Headers:\n";
+//print_r($rest->get('headers'));
+
+print "Filter:\n";
+print_r($rest->get('filter'));
