@@ -125,17 +125,6 @@ class RESTful {
         return $this->filtrate($this->private_scope,$filter);
     }
 
-    function randomString($length = 12, $charSet='') {
-        if(!empty($charSet )) $characters = $charSet;
-        else $characters = '0123456789abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
 } // class RESTful
 
 function getOptions($shortopts="", $longopts  = array("id:","action:")){

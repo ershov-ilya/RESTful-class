@@ -14,4 +14,8 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 defined('DEBUG') or define('DEBUG', true);
 
-print "Test\n";
+require_once('../restful.class.php');
+
+$rest = new RESTful();
+
+print_r($rest->scope);
