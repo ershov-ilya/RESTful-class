@@ -12,20 +12,20 @@ class RESTful {
     public $scope;
     static $filter;
 
-    function __construct($ACTION='', $filter=array('ACTION','RESTful','id'), $arrSanitize=array()){
+    function __construct($ACTION='', $filter=array('ACTION','METHOD','id'), $arrSanitize=array()){
         defined('ACTION') or define('ACTION', $ACTION);
 
         RESTful::$filter = $filter;
-        // Define RESTful type
-        if(isset($_SERVER['argc'])) define('RESTful', 'CONSOLE');//$this->private_name='CONSOLE';
-        elseif(isset($_SERVER['REQUEST_RESTful']))  define('RESTful', $_SERVER['REQUEST_RESTful']); //$this->private_name=$_SERVER['REQUEST_RESTful'];
+        // Define METHOD type
+        if(isset($_SERVER['argc'])) define('METHOD', 'CONSOLE');//$this->private_name='CONSOLE';
+        elseif(isset($_SERVER['REQUEST_METHOD']))  define('METHOD', $_SERVER['REQUEST_METHOD']); //$this->private_name=$_SERVER['REQUEST_METHOD'];
         else{
-            define('RESTful', 'UNKNOWN');
+            define('METHOD', 'UNKNOWN');
         }
 
         // Combine parameters
         $this->private_scope = array();
-        if(RESTful=='CONSOLE') {
+        if(METHOD=='CONSOLE') {
             //$this->private_scope = array_merge($this->private_scope, $_SERVER['argv']);
             $this->private_scope = array_merge($this->private_scope, getOptions());
         }
@@ -36,9 +36,9 @@ class RESTful {
 
 
         $this->private_scope['ACTION']=$ACTION;
-        $this->private_scope['RESTful']=RESTful;
+        $this->private_scope['METHOD']=METHOD;
         // Для дебага, возможность переопределять метод
-        if(DEBUG && isset($_GET['RESTful'])) $this->private_scope['RESTful']=$_GET['RESTful'];
+        if(DEBUG && isset($_GET['METHOD'])) $this->private_scope['METHOD']=$_GET['METHOD'];
 
         $this->scope = $this->sanitize($this->filtrateScope(), $arrSanitize);
         return $this->private_scope;
@@ -74,7 +74,7 @@ class RESTful {
                     // Only ALLOWED SYMBOLS
                     $out[$key] = preg_replace('/[^a-zA-Z0-9\-_\.]+/i', '', $val);
                     break;
-                case 'RESTful':
+                case 'METHOD':
                 case 'ACTION':
                     $out[$key] = preg_replace('/[^a-zA-Z\-_\.]+/i', '', $val);
                     break;
