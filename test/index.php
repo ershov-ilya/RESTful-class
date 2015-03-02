@@ -17,9 +17,9 @@ defined('DEBUG') or define('DEBUG', true);
 require_once('../restful.class.php');
 
 define('ACTION', 'test');
-//$rest = new RESTful(ACTION);
+//$rest = new RESTful(ACTION); // Фильтры по умолчанию
 //$rest = new RESTful(ACTION, array()); // Пустой массив вторым параметром отключает фильтрацию
-$rest = new RESTful(ACTION, array('aaa', 'Hash'));
+$rest = new RESTful(ACTION, array('aaa', 'Hash')); // Фильтры по умолчанию + пользовательские фильтры
 
 print "Scope:\n";
 print_r($rest->get('scope'));
