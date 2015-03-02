@@ -9,6 +9,7 @@
  */
 class RESTful {
     private $private_scope;
+    private $headers;
     public $scope;
     static $filter;
 
@@ -30,8 +31,9 @@ class RESTful {
             $this->private_scope = array_merge($this->private_scope, getOptions());
         }
         else{
+            $this->headers = RESTful::parseRequestHeaders();
+            $this->private_scope = array_merge($this->private_scope, $this->headers);
             $this->private_scope = array_merge($this->private_scope, $_REQUEST);
-            $this->private_scope = array_merge($this->private_scope, $this->parseRequestHeaders());
         }
 
 
@@ -40,7 +42,16 @@ class RESTful {
         // Для дебага, возможность переопределять метод
         if(DEBUG && isset($_GET['METHOD'])) $this->private_scope['METHOD']=$_GET['METHOD'];
 
-        $this->scope = $this->sanitize($this->filtrateScope(), $arrSanitize);
+        // Filter
+        if(empty($filter)){
+            $this->scope = $this->private_scope;
+        }
+        else{
+            $this->scope = $this->filtrateScope();
+        }
+
+        // Sanitize
+        $this->scope = $this->sanitize($this->scope, $arrSanitize);
         return $this->private_scope;
     }
 
@@ -48,7 +59,11 @@ class RESTful {
         return $this->private_scope;
     }
 
-    function parseRequestHeaders() {
+    function getHeaders(){
+        return $this->headers;
+    }
+
+    static private function parseRequestHeaders() {
         $headers = array();
         foreach($_SERVER as $key => $value) {
             if (substr($key, 0, 5) <> 'HTTP_') {
