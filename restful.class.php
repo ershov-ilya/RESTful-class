@@ -13,15 +13,21 @@ class RESTful {
     private $scope;
     private static $filter;
 
-    function __construct($ACTION='', $filter=array('ACTION','METHOD','id'), $arrSanitize=array()){
+    function __construct($ACTION='', $filter=0, $arrSanitize=array()){
         defined('ACTION') or define('ACTION', $ACTION);
 
-        RESTful::$filter = $filter;
+        if($filter!==array()){
+            if($filter===0) $filter=array();
+            RESTful::$filter = $filter;
+            $default_filter = array('ACTION', 'METHOD', 'id');
+            RESTful::$filter = array_merge($default_filter, $filter);
+        }
+
         // Define METHOD type
-        if(isset($_SERVER['argc'])) define('METHOD', 'CONSOLE');//$this->private_name='CONSOLE';
-        elseif(isset($_SERVER['REQUEST_METHOD']))  define('METHOD', $_SERVER['REQUEST_METHOD']); //$this->private_name=$_SERVER['REQUEST_METHOD'];
+        if(isset($_SERVER['argc'])) defined('METHOD') or define('METHOD', 'CONSOLE');//$this->private_name='CONSOLE';
+        elseif(isset($_SERVER['REQUEST_METHOD']))  defined('METHOD') or define('METHOD', $_SERVER['REQUEST_METHOD']); //$this->private_name=$_SERVER['REQUEST_METHOD'];
         else{
-            define('METHOD', 'UNKNOWN');
+            defined('METHOD') or define('METHOD', 'UNKNOWN');
         }
 
         // Combine parameters
@@ -57,11 +63,17 @@ class RESTful {
 
     function get($selector){
         switch($selector){
+            case 'scope':
+                return $this->scope;
+                break;
             case 'filter':
                 return RESTful::$filter;
                 break;
-            case 'scope':
-                return $this->scope;
+            case 'method':
+                return $this->scope['METHOD'];
+                break;
+            case 'action':
+                return $this->scope['ACTION'];
                 break;
             case 'raw':
                 return $this->private_scope;
