@@ -8,10 +8,10 @@
  * Time: 12:52
  */
 class RESTful {
-    private $private_scope;
     private $headers;
-    public $scope;
-    static $filter;
+    private $private_scope;
+    private $scope;
+    private static $filter;
 
     function __construct($ACTION='', $filter=array('ACTION','METHOD','id'), $arrSanitize=array()){
         defined('ACTION') or define('ACTION', $ACTION);
@@ -55,12 +55,23 @@ class RESTful {
         return $this->private_scope;
     }
 
-    function getRaw(){
-        return $this->private_scope;
-    }
-
-    function getHeaders(){
-        return $this->headers;
+    function get($selector){
+        switch($selector){
+            case 'filter':
+                return RESTful::$filter;
+                break;
+            case 'scope':
+                return $this->scope;
+                break;
+            case 'raw':
+                return $this->private_scope;
+                break;
+            case 'headers':
+                return $this->headers;
+                break;
+            default:
+                return array();
+        }
     }
 
     static private function parseRequestHeaders() {

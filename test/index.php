@@ -17,6 +17,8 @@ defined('DEBUG') or define('DEBUG', true);
 require_once('../restful.class.php');
 
 define('ACTION', 'test');
-$rest = new RESTful(ACTION, array()); //
+$rest = new RESTful(ACTION); //
 
-print_r($rest->scope);
+print_r($rest->get('scope'));
+
+print_r($rest->get('filter'));
